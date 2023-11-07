@@ -7,17 +7,26 @@
  */
 
 #include "VulkanTools.h"
+#include <unistd.h>
+#include <limits.h>
 
 #if !(defined(VK_USE_PLATFORM_IOS_MVK) || defined(VK_USE_PLATFORM_MACOS_MVK))
+ 
+const std::string getParentDir()
+{
+	char result[ PATH_MAX ];
+  	ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
+  	std::string parent = std::string( result, (count > 0) ? count : 0 );
+  	parent = parent.substr(0, parent.find_last_of("/\\"));
+  	return parent;
+}
 // iOS & macOS: VulkanExampleBase::getAssetPath() implemented externally to allow access to Objective-C components
 const std::string getAssetPath()
 {
 #if defined(VK_USE_PLATFORM_ANDROID_KHR)
 	return "";
-#elif defined(VK_EXAMPLE_ASSETS_DIR)
-	return VK_EXAMPLE_ASSETS_DIR;
 #else
-	return "./../assets/";
+	return getParentDir()+"/assets/";
 #endif
 }
 #endif
@@ -28,10 +37,8 @@ const std::string getShaderBasePath()
 {
 #if defined(VK_USE_PLATFORM_ANDROID_KHR)
 	return "shaders/";
-#elif defined(VK_EXAMPLE_SHADERS_DIR)
-	return VK_EXAMPLE_SHADERS_DIR;
 #else
-	return "./../shaders/";
+	return getParentDir() + "/shaders/";
 #endif
 }
 #endif

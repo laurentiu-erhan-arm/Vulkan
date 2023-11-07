@@ -111,6 +111,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB SOURCE *.cpp )
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/)
+
+
 if(RESOURCE_INSTALL_DIR)
 	add_definitions(-DVK_EXAMPLE_ASSETS_DIR=\"${RESOURCE_INSTALL_DIR}/\")
 	add_definitions(-DVK_EXAMPLE_SHADERS_DIR=\"${RESOURCE_INSTALL_DIR}/shaders/\")
@@ -120,6 +127,16 @@ else()
 	add_definitions(-DVK_EXAMPLE_ASSETS_DIR=\"${CMAKE_SOURCE_DIR}/assets/\")
 	add_definitions(-DVK_EXAMPLE_SHADERS_DIR=\"${CMAKE_SOURCE_DIR}/shaders/\")
 endif()
+
+# if(RESOURCE_INSTALL_DIR)
+# 	add_definitions(-DVK_EXAMPLE_ASSETS_DIR=\"${RESOURCE_INSTALL_DIR}/\")
+# 	add_definitions(-DVK_EXAMPLE_SHADERS_DIR=\"shaders/\")
+# 	install(DIRECTORY assets/ DESTINATION ${RESOURCE_INSTALL_DIR}/)
+# 	install(DIRECTORY shaders/ DESTINATION shaders/)
+# else()
+# 	add_definitions(-DVK_EXAMPLE_ASSETS_DIR=\"assets/\")
+# 	add_definitions(-DVK_EXAMPLE_SHADERS_DIR=\"shaders/\")
+# endif()
 
 # Compiler specific stuff
 IF(MSVC)
